@@ -1,0 +1,10 @@
+# 忽略编译生成的 macOS/Linux 二进制文件
+calculator
+*.out
+*.o
+
+# 忽略 Windows 下的编译产物（如果跨平台的话）
+*.exe
+
+# 忽略系统文件
+.DS_Store
