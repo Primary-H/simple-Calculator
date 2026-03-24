@@ -36,7 +36,6 @@ int token_count = 0;
 /* ==========================================
  * 2. 大数计算引擎 (Big Number Engine)
  * ========================================== */
-// TODO: 实现 add_big_num, multiply_big_num 等
 
 void add_big_num(const char *num1, const char *num2, char *result)
 {
@@ -364,13 +363,13 @@ void calculate_decimal(char op, const char* num1, const char* num2, char* result
         insert_decimal_point(result, d_max);
     } 
     else if (op == '*') {
-        /* TODO: 实现乘法的包装逻辑 */
+        // 乘法的包装逻辑
         int d_total = d1 + d2; // 乘法的小数位数是两数小数位数之和
         multiply_big_num(pure1, pure2, result);
         insert_decimal_point(result, d_total);
     } 
     else if (op == '-') {
-        /* TODO: 实现减法的包装逻辑 (与加法高度相似) */
+        // 实现减法的包装逻辑 (与加法高度相似)
         int d_max = (d1 > d2) ? d1 : d2;
         for (int i = 0; i < d_max - d1; i++) strcat(pure1, "0");
         for (int i = 0; i < d_max - d2; i++) strcat(pure2, "0");
@@ -391,7 +390,7 @@ void calculate_decimal(char op, const char* num1, const char* num2, char* result
         }
     }
     else if (op == '/') {
-        /* TODO: 实现除法的包装逻辑 (设定精度 P=8，计算需补零的数量并调用 divide_big_num) */
+        // 实现除法的包装逻辑 (设定精度 P=8，计算需补零的数量并调用 divide_big_num)
         int P = 8; // 设定精度
         int extra_P = P + 1; // 多算 1 位用于四舍五入 
         int zeros = extra_P + d2 - d1;
@@ -439,7 +438,6 @@ void calculate_decimal(char op, const char* num1, const char* num2, char* result
 /* ==========================================
  * 3. 词法分析与调度场算法 (Lexer & Parser)
  * ========================================== */
-// TODO: 实现 Token 解析和中缀转后缀逻辑
 
 // 3.1 词法分析器 (Lexer)
 int tokenize(const char *input)
@@ -624,7 +622,7 @@ int infix_to_postfix(Token* postfix) {
             if (top > 0 && op_stack[top - 1].type == TOKEN_LPAREN) {
                 top--; // 弹掉左括号
                 
-                // 🌟 新增逻辑：如果左括号下面压着一个函数，把它弹到结果队列里
+                // 如果左括号下面压着一个函数，把它弹到结果队列里
                 if (top > 0 && (op_stack[top - 1].type == TOKEN_ABS || op_stack[top - 1].type == TOKEN_SQRT)) {
                     postfix[postfix_count++] = op_stack[--top];
                 }
@@ -638,7 +636,7 @@ int infix_to_postfix(Token* postfix) {
         } 
         else {
             // 规则 4：遇到 + - * /
-            // TODO: 当栈不为空，且栈顶不是左括号，且 【栈顶运算符优先级 >= 当前运算符 t 的优先级】时
+            // 当栈不为空，且栈顶不是左括号，且 【栈顶运算符优先级 >= 当前运算符 t 的优先级】时
             // 不断将栈顶元素弹出到结果队列。
             // 最后，把当前运算符 t 压入符号栈。
             while (top > 0 && op_stack[top - 1].type != TOKEN_LPAREN && 
@@ -726,7 +724,7 @@ int evaluate_postfix(Token* postfix, int postfix_count, char* final_result) {
                 }
                 strcpy(stack[top++], res_str); // 压回栈顶
             } 
-            // 🌟 分支 B：处理二元运算符 (+, -, *, /)
+            // 分支 B：处理二元运算符 (+, -, *, /)
             else {
                 if (top < 2) 
                 {
