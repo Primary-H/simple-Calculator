@@ -469,11 +469,11 @@ int tokenize(const char *input)
             }
         }
 
-        // 1. 解析数字 (注意这里不再是 else if，因为我们在上面插了一段代码，直接用 if)
+        // 1. 解析数字 
         if (isdigit(input[i]) || input[i] == '.' || is_negative_sign) 
         {
             int j = 0;
-            // 🌟 如果是一元负号，先把 '-' 吃进数字字符串里，指针往后走一步
+            // 如果是一元负号，先把 '-' 吃进数字字符串里，指针往后走一步
             if (is_negative_sign) {
                 tokens[token_count].value[j++] = input[i++];
             }
@@ -648,7 +648,6 @@ int infix_to_postfix(Token* postfix) {
     }
 
     // 规则 5：遍历结束后，把符号栈里剩下的运算符全部弹出到结果队列
-    // TODO: 写一个 while 循环清空栈
     while (top > 0) {
         if (op_stack[top - 1].type == TOKEN_LPAREN) {
             printf("Mismatched parentheses!\n");
@@ -713,7 +712,7 @@ int evaluate_postfix(Token* postfix, int postfix_count, char* final_result) {
                     }
                     res_exp = exp / 2;
 
-                    // 彻底抛弃 math.h，调用我们自己的高精度牛顿迭代引擎！
+                    // 调用牛顿迭代引擎
                     calculate_decimal('s', m1, "0", res_str);
                     
                     if (res_exp != 0) {
